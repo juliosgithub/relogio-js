@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)file:///Users/fernandosousa/Documents/Udemy/testes.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+:root {
+--primary-color:rgb(17,86,102);
+--primary-color-darker:rgb(9,48,56);
+}
+* {
+box-sizing: border-box;
+outline: 0;
+margin: 0;
+padding: 0;
+}
+body {
+background: var(--primary-color-darker);
+}
+
+.container{
+margin: 140px auto auto auto;
+width: 500px;
+padding-top: 20px;
+padding-bottom: 20px;
+max-width: 700px;
+background:white;
+}
+.calculadora {
+width: 430px;
+margin: 0 auto;
+}
+.display {
+width: 100%;
+font-size: 1em;
+padding: 12px;
+text-align: right;
+}
+.btn {
+width: 100%;
+height: 55px;
+font-size: 1em;
+border: none;
+background:#dfdfdf;
+cursor: pointer;
+border: 1px solid #aaa;
+} 
+
+.btn:hover {
+background: #9e9e9e;
+}
+
+</style>
+
+</head><body><section class="container">
+
+<table class="calculadora">
+<tbody><tr>
+<td colspan="4"> <input type="text" class="display"></td>   
+</tr>
+
+<tr>
+<td><button class="btn btn-clear">C</button></td>   
+<td><button class="btn btn-num">(</button></td>   
+<td><button class="btn btn-num">)</button></td>   
+<td><button class="btn btn-num">/</button></td>   
+</tr>
+
+<tr>
+<td><button class="btn btn-num">7</button></td>   
+<td><button class="btn btn-num">8</button></td>   
+<td><button class="btn btn-num">9</button></td>   
+<td><button class="btn btn-num">*</button></td>   
+</tr>
+
+<tr>
+<td><button class="btn btn-num">4</button></td>   
+<td><button class="btn btn-num">5</button></td>   
+<td><button class="btn btn-num">6</button></td>   
+<td><button class="btn btn-num">+</button></td>   
+</tr>
+
+<tr>
+<td><button class="btn btn-num">1</button></td>   
+<td><button class="btn btn-num">2</button></td>   
+<td><button class="btn btn-num">3</button></td>   
+<td><button class="btn btn-num">-</button></td>   
+</tr>
+
+<tr>
+<td><button class="btn btn-num">.</button></td>   
+<td><button class="btn btn-num">0</button></td>   
+<td><button class="btn btn-del">«</button></td>   
+<td><button class="btn btn-eq">=</button></td>   
+</tr>
+</tbody></table>
+</section>
+
+<script>
+// format factory
+
+function criaCalculadora(){
+    return {
+        display: document.querySelector('.display'),
+        // metodo iniciador
+        inicia() {
+             this.cliqueBotoes()
+             this.pressionaBackSpace()
+             
+        },
+        
+    pressionaBackSpace(){
+     this.display.addEventListener('keydown', e => {
+       if(e.keyCode === 8){
+           e.preventDefault();
+           this.clearDisplay()
+       }  
+     })
+    },
+
+    pressionaEnter(){
+        this.display.addEventListener('keyup', e => {
+            if(e.keyCode === 13){
+            this.realizaConta();
+            }
+        })
+    },
+
+    realizaConta(){
+     let conta = this.display.value
+     try {
+         conta = eval(conta)
+         if(!conta){
+             alert('conta invalida');
+             return;
+         }
+         this.display.value = String(conta)
+     }  catch(e){
+         alert('conta invalida')
+         return;
+     }
+    
+    },
+
+    cliqueBotoes() {
+        document.addEventListener('click', (e) => {
+        const el = e.target
+
+        if(el.classList.contains('btn-num')){
+            this.btnParaDisplay(el.innerText);
+        }
+
+        if(el.classList.contains('btn-clear')){
+            this.clearDisplay();
+        }
+
+        if(el.classList.contains('btn-del')){
+            this.apagaUm();
+        }
+
+        if(el.classList.contains('btn-eq')){
+            this.realizaConta();
+        }
+        this.display.focus();
+
+        })
+    },
+
+clearDisplay(){
+    this.display.value = ''
+},
+
+apagaUm(){
+this.display.value = this.display.value.slice(0,-1)
+},
+
+btnParaDisplay(valor){
+    this.display.value += valor;
+}
+
+}
+}
+
+const calculadora = criaCalculadora()
+calculadora.inicia()
+
+</script>
+
+
+
+
+</body></html>
