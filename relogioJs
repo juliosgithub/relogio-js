@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+.pausado { color: brown;}
+.container_relogio {
+    margin: 200px auto auto auto;
+    width: auto;
+    font-size: 2em;
+    text-align: center;
+    background-color: rgba(153, 205, 50, 0.527);
+}
+body { font-size: 34px;}
+</style>
+
+</head>
+<body>
+
+<section class="container_relogio">
+<div class="relogio">00:00:00</div>
+<button class="iniciar">iniciar</button>
+<button class="pausar">pausar</button>
+<button class="zerar">zerar</button>
+</section>
+
+<script>
+// início do código
+let iniciar = document.querySelector('.iniciar')
+let relogio = document.querySelector('.relogio')
+let pausar = document.querySelector('.pausar')
+let zerar = document.querySelector('.zerar')
+let segundos = 0
+let timer;
+
+
+
+function mostraHora(segundos) {
+    const data = new Date(segundos * 1000);
+    return data.toLocaleTimeString('pt-BR', {
+    hour12: false,
+    timeZone:'UTC'
+}) 
+};
+
+
+function iniciarRelogio() {
+    timer = setInterval(function () {
+    segundos++;  
+    relogio.innerHTML = mostraHora(segundos)
+    },1000);
+};
+ 
+
+document.addEventListener('click', function(e) {
+const el = e.target;
+
+if (el.classList.contains('iniciar')) {
+    relogio.classList.remove('pausado');
+    clearInterval(timer);
+    iniciarRelogio();
+}
+
+if(el.classList.contains('pausar')){
+    relogio.classList.add('pausado')
+    clearInterval(timer)
+}
+
+if(el.classList.contains('zerar')){
+    clearInterval(timer);
+    relogio.classList.remove('pausado')
+    relogio.innerHTML = '00:00:00';
+    segundos = 0;
+}
+});
+    
+    
+    </script>
+    
+</body>
+</html>
+    
